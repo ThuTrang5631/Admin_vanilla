@@ -1,0 +1,26 @@
+.tablewrap {
+  table,
+  tr,
+  th,
+  td {
+    border: 1px solid;
+  }
+
+  .table {
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding-inline: 10px;
+  }
+
+  .table__title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .table__desc {
+    font-size: 16px;
+  }
+}
