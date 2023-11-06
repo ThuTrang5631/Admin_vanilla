@@ -9,8 +9,6 @@ interface UserProps {
   birthDate: string;
 }
 
-const tableDataEle = document.getElementById("js-table")!;
-
 //get users
 
 const getDataUser = async () => {
@@ -25,33 +23,51 @@ const getDataUser = async () => {
   }
 };
 
-console.log("tableDataEle", tableDataEle);
-
 window.addEventListener("load", getDataUser);
 
-const displayDataUser = (data: any) => {
-  let dataAppendTable = `
-  <tr class="table__row" id="js-table-title">
-    <th class="table__title">Id</th>
-    <th class="table__title">Full name</th>
-    <th class="table__title">Gender</th>
-    <th class="table__title">Email</th>
-    <th class="table__title">Phone</th>
-    <th class="table__title">Birth date</th>
-    <th class="table__title">Todo</th>
-  </tr>`;
+const displayDataUser = async (data: any) => {
+  const tableTitleEle = document.getElementById("js-list")!;
 
   for (let r of data) {
-    dataAppendTable += `
-      <tr class="table__row" id="js-table-data">
+    const row = document.createElement("tr");
+    row.classList.add(`table__tr${r.id}`);
+    row.innerHTML = `
         <td class="table__desc">${r.id}</td>
         <td class="table__desc">${r.lastName} ${r.firstName}</td>
         <td class="table__desc">${r.gender}</td>
         <td class="table__desc">${r.email}</td>
         <td class="table__desc">${r.phone}</td>
         <td class="table__desc">${r.birthDate}</td>
-      </tr>
+        <td class="table__desc table-todos">
+        </td>
         `;
+    tableTitleEle.appendChild(row);
+
+    // get to do of users follow id user
+    let todosList;
+
+    try {
+      const res = await fetch(`https://dummyjson.com/users/${r.id}/todos`);
+      todosList = await res.json();
+      console.log("dataTodo", todosList.todos);
+    } catch (error) {
+      console.log(error);
+    }
+
+    const parentElementTodo = document.querySelector(`.table__tr${r.id}`)!;
+    const todoEle = parentElementTodo.querySelector(".table-todos")!;
+    const listTodo = document.createElement("ul");
+
+    for (let todo of todosList.todos) {
+      listTodo.innerHTML += `
+      <li class="flex justify-between">
+        <p>${todo.todo}</p>
+        <span>
+          <i class="fa-solid ${todo.completed ? "fa-check" : "fa-x"}"></i>
+        </span>
+      </li>`;
+
+      todoEle.appendChild(listTodo);
+    }
   }
-  tableDataEle.innerHTML = dataAppendTable;
 };
