@@ -27,6 +27,7 @@ window.addEventListener("load", getDataUser);
 
 const displayDataUser = async (data: any) => {
   const tableTitleEle = document.getElementById("js-list")!;
+  tableTitleEle.innerHTML = "";
 
   for (let r of data) {
     const row = document.createElement("tr");
@@ -37,7 +38,10 @@ const displayDataUser = async (data: any) => {
         <td class="table__desc">${r.gender}</td>
         <td class="table__desc">${r.email}</td>
         <td class="table__desc">${r.phone}</td>
-        <td class="table__desc">${r.birthDate}</td>
+        <td class="table__desc">${r.birthDate
+          .split("-")
+          .reverse()
+          .join("/")}</td>
         <td class="table__desc table-todos">
         </td>
         `;
@@ -71,3 +75,31 @@ const displayDataUser = async (data: any) => {
     }
   }
 };
+
+// search user
+
+const inputEle = document.getElementById("js-search") as HTMLInputElement;
+const btnSearchEle = document.getElementById("js-search-btn");
+
+// call api for search
+
+const getUserForSearch = async (q: string) => {
+  try {
+    const res = await fetch(`https://dummyjson.com/users/search?q=${q}`);
+    const data = await res.json();
+    console.log("data", data);
+    if (data.users.length) {
+      displayDataUser(data?.users);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+btnSearchEle?.addEventListener("click", (e) => {
+  e.preventDefault();
+  const valueInput = inputEle.value.trim();
+
+  console.log("value", valueInput.split(" ")[0]);
+  getUserForSearch(valueInput.split(" ")[0]);
+});

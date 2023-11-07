@@ -14,7 +14,13 @@
 </head>
 
 <body>
-  <main>
+  <main class="home">
+    <div class="searchwrap">
+      <form class="search__form">
+        <input class="search__input" type="text" id="js-search" placeholder="Enter keywords...">
+        <button id="js-search-btn" class="search__btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+    </div>
     <section class="tablewrap">
       <table class="table" id="js-table">
         <thead>
@@ -29,28 +35,7 @@
           </tr>
         </thead>
         <tbody id="js-list">
-
         </tbody>
-        <!-- <tr class="table__row" id="js-table-data">
-          <td class="table__desc">1</td>
-          <td class="table__desc">Harry kho chiu</td>
-          <td class="table__desc">Female</td>
-          <td class="table__desc">hongbiet@gmail.com</td>
-          <td class="table__desc">0962345312</td>
-          <td class="table__desc">2011/1997</td>
-          <td class="table__desc">
-            <ul>
-              <li class="flex justify-between">
-                <p>Create a compost pile</p>
-                <span><i class="fa-solid fa-check"></i></span>
-              </li>
-              <li class="flex justify-between">
-                <p>Make a budget</p>
-                <span><i class="fa-solid fa-x"></i></span>
-              </li>
-            </ul>
-          </td>
-        </tr> -->
       </table>
     </section>
   </main>
