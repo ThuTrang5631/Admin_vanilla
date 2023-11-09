@@ -38,22 +38,30 @@
 
   .searchwrap {
     display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
   }
 
   .search__form {
-    margin-bottom: 20px;
     position: relative;
+    margin-right: 10px;
   }
 
   .search__input {
     border: 1px solid;
     border-radius: 3px;
     padding: 5px;
+    font-size: 16px;
+    font-weight: 500;
   }
 
   .search__btn {
     position: absolute;
     top: 6px;
     right: 15px;
+  }
+
+  .filter__gender {
+    cursor: pointer;
   }
 }

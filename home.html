@@ -20,6 +20,13 @@
         <input class="search__input" type="text" id="js-search" placeholder="Enter keywords...">
         <button id="js-search-btn" class="search__btn"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
+      <div class="filter__wrapgender">
+        <select id="js-filter-gender" class="filter__gender search__input">
+          <option value="" selected hidden disabled>Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
     </div>
     <section class="tablewrap">
       <table class="table" id="js-table">
@@ -32,12 +39,20 @@
             <th class="table__title">Phone</th>
             <th class="table__title">Birth date</th>
             <th class="table__title">Todo</th>
+            <th class="table__title">Action</th>
           </tr>
         </thead>
         <tbody id="js-list">
         </tbody>
       </table>
+      <div id="pagination"></div>
     </section>
+    <div class="wrappopup__delete">
+      <div class="popup__delete">
+        <p>Do you want to delete item?</p>
+        <div></div>
+      </div>
+    </div>
   </main>
   <script type="module" src="/src/main.ts"></script>
 </body>
