@@ -47,13 +47,19 @@
       </table>
       <div id="pagination"></div>
     </section>
-    <div class="wrappopup__delete">
-      <div class="popup__delete">
-        <p>Do you want to delete item?</p>
-        <div></div>
+  </main>
+  <div class="wrappopup__delete hidden">
+    <div class="popupdelete">
+      <button class="popupdelete__btn--cancel js-btn-cancel">
+        <span class="icon-close">X</span>
+      </button>
+      <p class="popupdelete__content">Do you want to delete item?</p>
+      <div class="popupdelete__wrapbtn flex justify-between">
+        <button class="popupdelete__btn js-btn-cancel">Cancel</button>
+        <button class="popupdelete__btn" id="js-delete">Ok</button>
       </div>
     </div>
-  </main>
+  </div>
   <script type="module" src="/src/main.ts"></script>
 </body>
 

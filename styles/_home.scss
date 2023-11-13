@@ -65,3 +65,50 @@
     cursor: pointer;
   }
 }
+
+.wrappopup__delete {
+  background-color: $bg-modal;
+  bottom: 0;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  overflow-y: hidden;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 400;
+  align-items: center;
+
+  .popupdelete {
+    max-width: 500px;
+    background-color: $white;
+    background: $white;
+    box-shadow: 0px 3px 10px $bg-modal;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 45px 35px 35px;
+    position: relative;
+    margin: 0 20px;
+    border-radius: 10px;
+  }
+
+  .popupdelete__content {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .popupdelete__btn {
+    border-radius: 5px;
+    border: 1px solid;
+    padding: 10px;
+    min-width: 50px;
+  }
+
+  .popupdelete__btn--cancel {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+}

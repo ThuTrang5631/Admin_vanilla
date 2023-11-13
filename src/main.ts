@@ -14,6 +14,7 @@ let totalUsers;
 let maxPage;
 const limit = 20;
 let skip = 0;
+const popUpDeleteEle = document.querySelector(".wrappopup__delete");
 
 const getDataUser = async () => {
   try {
@@ -52,7 +53,7 @@ const displayDataUser = async (data: any) => {
           .join("/")}</td>
         <td class="table__desc table-todos">
         </td>
-        <td class="table__desc text-center justify-center"><button id="js-delete-${
+        <td class="table__desc text-center justify-center"><button id="js-openpopupdelete-${
           r.id
         }" class="btn btn-delete"><i class="fa-solid fa-trash"></i></button></td>
         `;
@@ -91,25 +92,52 @@ const displayDataUser = async (data: any) => {
     }
 
     // DELETE user
-    const btnDeleteEle = document.getElementById(`js-delete-${r.id}`);
+    const btnOpenPopUpDeleteEle = document.getElementById(
+      `js-openpopupdelete-${r.id}`
+    );
 
-    btnDeleteEle?.addEventListener("click", async () => {
-      try {
-        const res = await fetch(`https://dummyjson.com/users/${r.id}`, {
-          method: "DELETE",
-        });
-        const data = await res.json();
-        if (data.isDeleted) {
-          const elementDeleted = document.querySelector(`.table__tr${r.id}`);
-          elementDeleted?.remove();
+    btnOpenPopUpDeleteEle?.addEventListener("click", () => {
+      popUpDeleteEle?.classList.remove("hidden");
+      popUpDeleteEle?.classList.add("flex");
+
+      const btnDeleteEle = document.getElementById("js-delete");
+
+      // delete functions
+      btnDeleteEle?.addEventListener("click", async () => {
+        try {
+          const res = await fetch(`https://dummyjson.com/users/${r.id}`, {
+            method: "DELETE",
+          });
+          const data = await res.json();
+          console.log("data", data);
+
+          if (data.isDeleted) {
+            popUpDeleteEle?.classList.add("hidden");
+            popUpDeleteEle?.classList.remove("flex");
+            const elementDeleted = document.querySelector(`.table__tr${r.id}`);
+            elementDeleted?.remove();
+          }
+        } catch (error) {
+          console.log(error);
+          window.alert("not delete");
         }
-      } catch (error) {
-        console.log(error);
-        window.alert("not delete");
-      }
+      });
     });
   }
 };
+
+// Close Popup delete
+const closePopUp = () => {
+  popUpDeleteEle?.classList.add("hidden");
+  popUpDeleteEle?.classList.remove("flex");
+};
+
+const btnClosePopUp = document.getElementsByClassName("js-btn-cancel");
+
+console.log("btnClosePopUp", btnClosePopUp);
+for (let i = 0; i < btnClosePopUp.length; i++) {
+  btnClosePopUp[i].addEventListener("click", closePopUp);
+}
 
 // SEARCH user
 
