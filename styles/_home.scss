@@ -38,8 +38,6 @@
 
   .searchwrap {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
   }
 
   .search__form {
@@ -64,9 +62,17 @@
   .filter__gender {
     cursor: pointer;
   }
+
+  .home__wrapfeatures {
+    margin-bottom: 20px;
+  }
+
+  .home__btnadduser {
+    padding-inline: 20px;
+  }
 }
 
-.wrappopup__delete {
+.wrappopup {
   background-color: $bg-modal;
   bottom: 0;
   flex-direction: column;
@@ -79,24 +85,16 @@
   z-index: 400;
   align-items: center;
 
-  .popupdelete {
-    max-width: 500px;
+  .popup {
     background-color: $white;
     background: $white;
     box-shadow: 0px 3px 10px $bg-modal;
-    min-height: 180px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 45px 35px 35px;
     position: relative;
     margin: 0 20px;
     border-radius: 10px;
-  }
-
-  .popupdelete__content {
-    font-size: 16px;
-    margin-bottom: 20px;
   }
 
   .popupdelete__btn {
@@ -106,9 +104,47 @@
     min-width: 50px;
   }
 
+  .popup__input {
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 5px;
+  }
+
+  .popup__label {
+    font-size: 16px;
+  }
+}
+
+.wrappopup__delete {
+  .popupdelete {
+    max-width: 500px;
+    padding: 45px 35px 35px;
+    min-height: 180px;
+  }
+
+  .popupdelete__content {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
   .popupdelete__btn--cancel {
     position: absolute;
     top: 10px;
     right: 20px;
+  }
+}
+
+.wrappopup__createuser {
+  .popupcreateuser {
+    padding: 20px;
+    max-width: 650px;
+    width: 100%;
+  }
+
+  .popupcreateuser__title {
+    font-size: 25px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
   }
 }

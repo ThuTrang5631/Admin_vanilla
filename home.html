@@ -15,17 +15,22 @@
 
 <body>
   <main class="home">
-    <div class="searchwrap">
-      <form class="search__form">
-        <input class="search__input" type="text" id="js-search" placeholder="Enter keywords...">
-        <button id="js-search-btn" class="search__btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-      </form>
-      <div class="filter__wrapgender">
-        <select id="js-filter-gender" class="filter__gender search__input">
-          <option value="" selected hidden disabled>Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
+    <div class="home__wrapfeatures flex justify-between">
+      <div class="searchwrap">
+        <form class="search__form">
+          <input class="search__input" type="text" id="js-search" placeholder="Enter keywords...">
+          <button id="js-search-btn" class="search__btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+        <div class="filter__wrapgender">
+          <select id="js-filter-gender" class="filter__gender search__input">
+            <option value="" selected hidden disabled>Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+      </div>
+      <div class="home__wrapbtnadduser">
+        <button id="js-openpopup-adduser" class="home__btnadduser search__input">Add user</button>
       </div>
     </div>
     <section class="tablewrap">
@@ -48,8 +53,8 @@
       <div id="pagination"></div>
     </section>
   </main>
-  <div class="wrappopup__delete hidden">
-    <div class="popupdelete">
+  <div class="wrappopup wrappopup__delete hidden" id="js-popupdelete">
+    <div class="popup popupdelete">
       <button class="popupdelete__btn--cancel js-btn-cancel">
         <span class="icon-close">X</span>
       </button>
@@ -57,6 +62,44 @@
       <div class="popupdelete__wrapbtn flex justify-between">
         <button class="popupdelete__btn js-btn-cancel">Cancel</button>
         <button class="popupdelete__btn" id="js-delete">Ok</button>
+      </div>
+    </div>
+  </div>
+  <div class="wrappopup wrappopup__createuser hidden" id="js-popupcreateuser">
+    <div class="popup popupcreateuser">
+      <p class="popupcreateuser__title">Create A New User</p>
+      <form class="popupcreateuser__form">
+        <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
+          <label class="popup__label mb-[10px]">First name</label>
+          <input id="js-first-name" class="popup__input" placeholder="Enter first name...">
+        </div>
+        <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
+          <label class="popup__label mb-[10px]">Last name</label>
+          <input id="js-last-name" class="popup__input" placeholder="Enter last name...">
+        </div>
+        <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
+          <label class="popup__label mb-[10px]">Gender</label>
+          <select id="js-gender" class="popup__input">
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+        <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
+          <label class="popup__label mb-[10px]">Email</label>
+          <input id="js-email" type="email" class="popup__input" placeholder="Enter email...">
+        </div>
+        <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
+          <label class="popup__label mb-[10px]">Phone</label>
+          <input id="js-phone" maxlength="10" type="text" class="popup__input" placeholder="Enter phone...">
+        </div>
+        <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
+          <label class="popup__label mb-[10px]">Birth date</label>
+          <input id="js-date" type="date" class="popup__input" placeholder="Enter birth date...">
+        </div>
+      </form>
+      <div class="popupdelete__wrapbtn flex justify-between">
+        <button class="popupdelete__btn" id="js-btn-cancel-adduser">Cancel</button>
+        <button class="popupdelete__btn" id="js-adduser">Ok</button>
       </div>
     </div>
   </div>
