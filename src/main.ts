@@ -17,6 +17,8 @@ let skip = 0;
 let userFinal: any;
 const tableTitleEle = document.getElementById("js-list")!;
 const popUpDeleteEle = document.getElementById("js-popupdelete");
+const btnClosePopUp = document.getElementsByClassName("js-btn-cancel");
+let isOpenPopUpDelete = false;
 
 const getDataUser = async () => {
   try {
@@ -29,6 +31,17 @@ const getDataUser = async () => {
     userFinal = users[users.length - 1];
   } catch (error) {
     console.log(error);
+  }
+};
+
+// open popup delete
+const openPopUpDelete = (openDelete: boolean) => {
+  if (openDelete) {
+    popUpDeleteEle?.classList.remove("hidden");
+    popUpDeleteEle?.classList.add("flex");
+  } else {
+    popUpDeleteEle?.classList.add("hidden");
+    popUpDeleteEle?.classList.remove("flex");
   }
 };
 
@@ -90,52 +103,51 @@ const displayDataUser = async (data: any) => {
       todoEle.appendChild(listTodo);
     }
 
-    // DELETE user
+    // get element of button open pop up delete user
     const btnOpenPopUpDeleteEle = document.getElementById(
       `js-openpopupdelete-${r.id}`
     );
 
     btnOpenPopUpDeleteEle?.addEventListener("click", () => {
-      popUpDeleteEle?.classList.remove("hidden");
-      popUpDeleteEle?.classList.add("flex");
+      isOpenPopUpDelete = true;
+      openPopUpDelete(isOpenPopUpDelete);
 
       const btnDeleteEle = document.getElementById("js-delete");
 
       // delete functions
-      btnDeleteEle?.addEventListener("click", async () => {
-        try {
-          const res = await fetch(`https://dummyjson.com/users/${r.id}`, {
-            method: "DELETE",
-          });
-          const data = await res.json();
-          console.log("data", data);
-
-          if (data.isDeleted) {
-            popUpDeleteEle?.classList.add("hidden");
-            popUpDeleteEle?.classList.remove("flex");
-            const elementDeleted = document.querySelector(`.table__tr${r.id}`);
-            elementDeleted?.remove();
-          }
-        } catch (error) {
-          console.log(error);
-          window.alert("not delete");
-        }
+      btnDeleteEle?.addEventListener("click", () => {
+        deleteUser(r.id);
       });
     });
   }
 };
 
-// Close Popup delete
-const closePopUp = () => {
-  popUpDeleteEle?.classList.add("hidden");
-  popUpDeleteEle?.classList.remove("flex");
+// DELETE USER
+const deleteUser = async (id: number) => {
+  try {
+    const res = await fetch(`https://dummyjson.com/users/${id}`, {
+      method: "DELETE",
+    });
+    const data = await res.json();
+    console.log("data", data);
+
+    if (data.isDeleted) {
+      isOpenPopUpDelete = false;
+      openPopUpDelete(isOpenPopUpDelete);
+      const elementDeleted = document.querySelector(`.table__tr${id}`);
+      elementDeleted?.remove();
+    }
+  } catch (error) {
+    console.log(error);
+    window.alert("not delete");
+  }
 };
 
-const btnClosePopUp = document.getElementsByClassName("js-btn-cancel");
-
-console.log("btnClosePopUp", btnClosePopUp);
 for (let i = 0; i < btnClosePopUp.length; i++) {
-  btnClosePopUp[i].addEventListener("click", closePopUp);
+  btnClosePopUp[i].addEventListener("click", () => {
+    isOpenPopUpDelete = false;
+    openPopUpDelete(isOpenPopUpDelete);
+  });
 }
 
 // ADD USER
@@ -171,12 +183,14 @@ btnPopUpAddUserEle?.addEventListener("click", () => {
   openPopUpAddUser(isOpenPopUpAddUser);
 });
 
-btnCancelPopUpAddUserEle?.addEventListener("click", () => {
+btnCancelPopUpAddUserEle?.addEventListener("click", (e) => {
+  e.preventDefault();
   isOpenPopUpAddUser = false;
   openPopUpAddUser(isOpenPopUpAddUser);
 });
 
-btnAddUser?.addEventListener("click", async () => {
+btnAddUser?.addEventListener("click", async (e) => {
+  e.preventDefault();
   const firstName = firstNameAddEle.value.trim();
   const lastName = lastNameAddEle.value.trim();
   const email = emailAddEle.value.trim();
@@ -185,34 +199,37 @@ btnAddUser?.addEventListener("click", async () => {
   const birthDate = birthDateAddEle.value.trim();
   let dataToAdd: any;
 
-  try {
-    const res = await fetch("https://dummyjson.com/users/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        email,
-        phone,
-        gender,
-        birthDate,
-      }),
-    });
-    dataToAdd = await res.json();
-    console.log("data to add", dataToAdd);
-    isOpenPopUpAddUser = false;
-    openPopUpAddUser(isOpenPopUpAddUser);
-  } catch (error) {
-    console.log(error);
-  }
+  if (!firstName || !lastName || !email || !phone || !birthDate) {
+    window.alert("enter field again");
+  } else {
+    try {
+      const res = await fetch("https://dummyjson.com/users/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          phone,
+          gender,
+          birthDate,
+        }),
+      });
+      dataToAdd = await res.json();
+      console.log("data to add", dataToAdd);
+      isOpenPopUpAddUser = false;
+      openPopUpAddUser(isOpenPopUpAddUser);
+    } catch (error) {
+      console.log(error);
+    }
 
-  const row = document.createElement("tr");
-  row.classList.add(`table__tr${dataToAdd.id}`);
-  row.innerHTML = `
+    const row = document.createElement("tr");
+    row.classList.add(`table__tr${dataToAdd.id}`);
+    row.innerHTML = `
         <td class="table__desc">${dataToAdd.id}</td>
         <td class="table__desc">${dataToAdd.lastName} ${
-    dataToAdd.firstName
-  }</td>
+      dataToAdd.firstName
+    }</td>
         <td class="table__desc">${dataToAdd.gender}</td>
         <td class="table__desc">${dataToAdd.email}</td>
         <td class="table__desc">${dataToAdd.phone}</td>
@@ -226,9 +243,29 @@ btnAddUser?.addEventListener("click", async () => {
           dataToAdd.id
         }" class="btn btn-delete"><i class="fa-solid fa-trash"></i></button></td>
         `;
-  tableTitleEle.appendChild(row);
+    tableTitleEle.appendChild(row);
 
-  console.log("userfinal", `table_tr${userFinal.id}`);
+    const btnOpenPopUpDeleteEle = document.getElementById(
+      `js-openpopupdelete-${dataToAdd.id}`
+    );
+
+    btnOpenPopUpDeleteEle?.addEventListener("click", () => {
+      isOpenPopUpDelete = true;
+      openPopUpDelete(isOpenPopUpDelete);
+
+      const btnDeleteEle = document.getElementById("js-delete");
+
+      // delete functions
+      btnDeleteEle?.addEventListener("click", () => {
+        isOpenPopUpDelete = false;
+        openPopUpDelete(isOpenPopUpDelete);
+        const elementDeleted = document.querySelector(
+          `.table__tr${dataToAdd.id}`
+        );
+        elementDeleted?.remove();
+      });
+    });
+  }
 });
 
 // SEARCH user
