@@ -18,7 +18,25 @@ let userFinal: any;
 const tableTitleEle = document.getElementById("js-list")!;
 const popUpDeleteEle = document.getElementById("js-popupdelete");
 const btnClosePopUp = document.getElementsByClassName("js-btn-cancel");
-let isOpenPopUpDelete = false;
+const firstNameUpdateEle = document.getElementById(
+  "js-first-name-update"
+) as HTMLInputElement;
+const lastNameUpdateEle = document.getElementById(
+  "js-last-name-update"
+) as HTMLInputElement;
+const emailUpdateEle = document.getElementById(
+  "js-email-update"
+) as HTMLInputElement;
+const phoneUpdateEle = document.getElementById(
+  "js-phone-update"
+) as HTMLInputElement;
+const genderUpdateEle = document.getElementById(
+  "js-gender-update"
+) as HTMLInputElement;
+const birthDateUpdateEle = document.getElementById(
+  "js-date-update"
+) as HTMLInputElement;
+const btnUpdateUser = document.getElementById("js-updateuser");
 
 const getDataUser = async () => {
   try {
@@ -35,7 +53,7 @@ const getDataUser = async () => {
 };
 
 // open popup delete
-const openPopUpDelete = (openDelete: boolean) => {
+const openPopUpDelete = (openDelete = false) => {
   if (openDelete) {
     popUpDeleteEle?.classList.remove("hidden");
     popUpDeleteEle?.classList.add("flex");
@@ -54,21 +72,28 @@ const displayDataUser = async (data: any) => {
     const row = document.createElement("tr");
     row.classList.add(`table__tr${r.id}`);
     row.innerHTML = `
-        <td class="table__desc">${r.id}</td>
-        <td class="table__desc">${r.lastName} ${r.firstName}</td>
-        <td class="table__desc">${r.gender}</td>
-        <td class="table__desc">${r.email}</td>
-        <td class="table__desc">${r.phone}</td>
-        <td class="table__desc">${r.birthDate
-          .split("-")
-          .reverse()
-          .join("/")}</td>
+        <td class="table__desc" id="js-contain-${r.id}">${r.id}</td>
+        <td class="table__desc" id="js-firstlastname-${r.id}">${r.lastName} ${
+      r.firstName
+    }</td>
+        <td class="table__desc" id="js-gender-${r.id}">${r.gender}</td>
+        <td class="table__desc" id="js-email-${r.id}">${r.email}</td>
+        <td class="table__desc" id="js-phone-${r.id}">${r.phone}</td>
+        <td class="table__desc" id="js-birthdate-${r.id}">${r.birthDate
+      .split("-")
+      .reverse()
+      .join("/")}</td>
         <td class="table__desc table-todos">
         </td>
-        <td class="table__desc text-center justify-center"><button id="js-openpopupdelete-${
+        <td class="table__desc text-center justify-center">
+        <button id="js-openpopupdelete-${
           r.id
-        }" class="btn btn-delete"><i class="fa-solid fa-trash"></i></button></td>
+        }" class="btn btn-delete mr-[10px]"><i class="fa-solid fa-trash"></i></button>
+        <button class="btn btn-delete" id="js-openpopupupdate-${r.id}">
+          <i class="fas fa-edit"></i>
+        </button></td>
         `;
+
     tableTitleEle.appendChild(row);
 
     // get to do of users follow id user
@@ -109,14 +134,61 @@ const displayDataUser = async (data: any) => {
     );
 
     btnOpenPopUpDeleteEle?.addEventListener("click", () => {
-      isOpenPopUpDelete = true;
-      openPopUpDelete(isOpenPopUpDelete);
+      openPopUpDelete(true);
 
       const btnDeleteEle = document.getElementById("js-delete");
 
       // delete functions
       btnDeleteEle?.addEventListener("click", () => {
         deleteUser(r.id);
+      });
+    });
+
+    // get element of button open pop up update user
+    const btnOpenPopUpUpdateUserEle = document.getElementById(
+      `js-openpopupupdate-${r.id}`
+    );
+
+    btnOpenPopUpUpdateUserEle?.addEventListener("click", (e) => {
+      console.log("btnOpenPopUpUpdateUserEle", btnOpenPopUpUpdateUserEle);
+      e.preventDefault();
+      openPopUpUpdateUser(true);
+      firstNameUpdateEle.value = r.firstName;
+      lastNameUpdateEle.value = r.lastName;
+      genderUpdateEle.value = r.gender;
+      emailUpdateEle.value = r.email;
+      phoneUpdateEle.value = r.phone;
+      birthDateUpdateEle.value = r.birthDate;
+      let dataToUpdate;
+
+      const idUpdate = r.id;
+      console.log("idUpdate", idUpdate);
+
+      btnUpdateUser?.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        openPopUpUpdateUser(false);
+        if (
+          firstNameUpdateEle.value !== r.firstName ||
+          lastNameUpdateEle.value !== r.lastName ||
+          genderUpdateEle.value !== r.gender ||
+          emailUpdateEle.value !== r.email ||
+          phoneUpdateEle.value !== r.phone ||
+          birthDateUpdateEle.value !== r.birthDate
+        ) {
+          dataToUpdate = {
+            firstName: firstNameUpdateEle.value,
+            lastName: lastNameUpdateEle.value,
+            email: emailUpdateEle.value,
+            phone: phoneUpdateEle.value,
+            gender: genderUpdateEle.value,
+            birthDate: birthDateUpdateEle.value,
+          };
+
+          // BUG: CALL ID PREVIOUS, SHOULD CALL ID CURRENTLY => CALL MANY TIMES
+
+          updateUser(dataToUpdate, idUpdate);
+        }
       });
     });
   }
@@ -132,8 +204,7 @@ const deleteUser = async (id: number) => {
     console.log("data", data);
 
     if (data.isDeleted) {
-      isOpenPopUpDelete = false;
-      openPopUpDelete(isOpenPopUpDelete);
+      openPopUpDelete(false);
       const elementDeleted = document.querySelector(`.table__tr${id}`);
       elementDeleted?.remove();
     }
@@ -145,13 +216,11 @@ const deleteUser = async (id: number) => {
 
 for (let i = 0; i < btnClosePopUp.length; i++) {
   btnClosePopUp[i].addEventListener("click", () => {
-    isOpenPopUpDelete = false;
-    openPopUpDelete(isOpenPopUpDelete);
+    openPopUpDelete(false);
   });
 }
 
 // ADD USER
-let isOpenPopUpAddUser = false;
 const btnPopUpAddUserEle = document.getElementById("js-openpopup-adduser");
 const popUpAddUserEle = document.getElementById("js-popupcreateuser");
 const btnCancelPopUpAddUserEle = document.getElementById(
@@ -169,7 +238,7 @@ const phoneAddEle = document.getElementById("js-phone") as HTMLInputElement;
 const genderAddEle = document.getElementById("js-gender") as HTMLInputElement;
 const birthDateAddEle = document.getElementById("js-date") as HTMLInputElement;
 
-const openPopUpAddUser = (open: boolean) => {
+const openPopUpAddUser = (open = false) => {
   if (open) {
     popUpAddUserEle?.classList.add("flex");
     popUpAddUserEle?.classList.remove("hidden");
@@ -179,14 +248,12 @@ const openPopUpAddUser = (open: boolean) => {
   }
 };
 btnPopUpAddUserEle?.addEventListener("click", () => {
-  isOpenPopUpAddUser = true;
-  openPopUpAddUser(isOpenPopUpAddUser);
+  openPopUpAddUser(true);
 });
 
 btnCancelPopUpAddUserEle?.addEventListener("click", (e) => {
   e.preventDefault();
-  isOpenPopUpAddUser = false;
-  openPopUpAddUser(isOpenPopUpAddUser);
+  openPopUpAddUser(false);
 });
 
 btnAddUser?.addEventListener("click", async (e) => {
@@ -217,8 +284,7 @@ btnAddUser?.addEventListener("click", async (e) => {
       });
       dataToAdd = await res.json();
       console.log("data to add", dataToAdd);
-      isOpenPopUpAddUser = false;
-      openPopUpAddUser(isOpenPopUpAddUser);
+      openPopUpAddUser();
     } catch (error) {
       console.log(error);
     }
@@ -250,15 +316,13 @@ btnAddUser?.addEventListener("click", async (e) => {
     );
 
     btnOpenPopUpDeleteEle?.addEventListener("click", () => {
-      isOpenPopUpDelete = true;
-      openPopUpDelete(isOpenPopUpDelete);
+      openPopUpDelete(true);
 
       const btnDeleteEle = document.getElementById("js-delete");
 
       // delete functions
       btnDeleteEle?.addEventListener("click", () => {
-        isOpenPopUpDelete = false;
-        openPopUpDelete(isOpenPopUpDelete);
+        openPopUpDelete(false);
         const elementDeleted = document.querySelector(
           `.table__tr${dataToAdd.id}`
         );
@@ -267,6 +331,52 @@ btnAddUser?.addEventListener("click", async (e) => {
     });
   }
 });
+
+// UPDATE USER
+const popUpUpdateUserEle = document.getElementById("js-popupupdateuser");
+const btnCancelPopUpUpdateUserEle = document.getElementById(
+  "js-btn-cancel-updateuser"
+);
+
+const openPopUpUpdateUser = (openPopUpUpdate = false) => {
+  if (openPopUpUpdate) {
+    popUpUpdateUserEle?.classList.add("flex");
+    popUpUpdateUserEle?.classList.remove("hidden");
+  } else {
+    popUpUpdateUserEle?.classList.add("hidden");
+    popUpUpdateUserEle?.classList.remove("flex");
+  }
+};
+
+btnCancelPopUpUpdateUserEle?.addEventListener("click", (e) => {
+  e.preventDefault();
+  openPopUpUpdateUser(false);
+});
+
+const updateUser = async (dataToUpdate: any, id: number) => {
+  console.log("dataToUpdate", dataToUpdate);
+  console.log("idUpdate", id);
+  try {
+    const res = await fetch(`https://dummyjson.com/users/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataToUpdate),
+    });
+    const dataUpdateSucess = await res.json();
+    const firstNameEle = document.getElementById(`js-firstlastname-${id}`)!;
+    const emailEle = document.getElementById(`js-email-${id}`)!;
+    const phoneEle = document.getElementById(`js-phone-${id}`)!;
+    const birthDateEle = document.getElementById(`js-birthdate-${id}`)!;
+    firstNameEle.innerHTML = `${dataUpdateSucess.lastName} ${dataUpdateSucess.firstName}`;
+    emailEle.innerHTML = dataUpdateSucess.email;
+    phoneEle.innerHTML = dataUpdateSucess.phone;
+    birthDateEle.innerHTML = dataUpdateSucess.birthDate;
+
+    console.log("dataUpdateSucess", dataUpdateSucess);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // SEARCH user
 
