@@ -1,4 +1,4 @@
-import "../styles/_index.scss";
+import "../../styles/_index.scss";
 
 interface UserProps {
   id: number;
