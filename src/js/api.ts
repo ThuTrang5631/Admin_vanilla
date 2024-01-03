@@ -4,7 +4,7 @@ export const getApi = async (endpoint: string, params: any) => {
   let data;
   try {
     const res = await fetch(`${URL}${endpoint}${params}`);
-    data = res.json();
+    data = await res.json();
   } catch (error) {
     console.log(error);
   }
@@ -24,6 +24,7 @@ export const putApt = async (
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataToUpdate),
     });
+    data = await res.json();
   } catch (error) {
     console.log(error);
   }
