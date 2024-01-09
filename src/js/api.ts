@@ -1,4 +1,4 @@
-import { URL } from "./constant";
+import { URL } from "./utils";
 
 export const getApi = async (path: string) => {
   let data;
