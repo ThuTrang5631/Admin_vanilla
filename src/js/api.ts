@@ -1,9 +1,9 @@
 import { URL } from "./constant";
 
-export const getApi = async (endpoint: string, params: any) => {
+export const getApi = async (path: string) => {
   let data;
   try {
-    const res = await fetch(`${URL}${endpoint}${params}`);
+    const res = await fetch(`${URL}${path}`);
     data = await res.json();
   } catch (error) {
     console.log(error);
@@ -12,7 +12,7 @@ export const getApi = async (endpoint: string, params: any) => {
   return data;
 };
 
-export const putApt = async (
+export const putApi = async (
   endpoint: string,
   param: number,
   dataToUpdate: any
@@ -49,7 +49,7 @@ export const postApi = async (endpoint: string, dataToPost: any) => {
 export const deleteApi = async (endpoint: string, params: number) => {
   let data;
   try {
-    const res = await fetch(`${endpoint}${params}`, {
+    const res = await fetch(`${URL}${endpoint}${params}`, {
       method: "DELETE",
     });
     data = await res.json();

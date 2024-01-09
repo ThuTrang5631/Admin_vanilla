@@ -1,4 +1,8 @@
 import "../../styles/_index.scss";
+import { updateUser } from "./UpdateUser";
+import { popUp } from "./PopUp";
+import { deleteUser } from "./DeleteUser";
+import { getApi } from "./api";
 
 interface UserProps {
   id: number;
@@ -40,26 +44,12 @@ const btnUpdateUser = document.getElementById("js-updateuser");
 
 const getDataUser = async () => {
   try {
-    const res = await fetch(
-      `https://dummyjson.com/users?skip=${skip}&limit=${limit}`
-    );
-    const data = await res.json();
+    const data = await getApi(`/users?skip=${skip}&limit=${limit}`);
     const users = data.users;
     displayDataUser(users);
     userFinal = users[users.length - 1];
   } catch (error) {
     console.log(error);
-  }
-};
-
-// open popup delete
-const openPopUpDelete = (openDelete = false) => {
-  if (openDelete) {
-    popUpDeleteEle?.classList.remove("hidden");
-    popUpDeleteEle?.classList.add("flex");
-  } else {
-    popUpDeleteEle?.classList.add("hidden");
-    popUpDeleteEle?.classList.remove("flex");
   }
 };
 
@@ -100,8 +90,7 @@ const displayDataUser = async (data: any) => {
     let todosList;
 
     try {
-      const res = await fetch(`https://dummyjson.com/users/${r.id}/todos`);
-      todosList = await res.json();
+      todosList = await getApi(`/users/${r.id}/todos`);
       console.log("dataTodo", todosList.todos);
     } catch (error) {
       console.log(error);
@@ -134,13 +123,14 @@ const displayDataUser = async (data: any) => {
     );
 
     btnOpenPopUpDeleteEle?.addEventListener("click", () => {
-      openPopUpDelete(true);
+      // openPopUpDelete(true);
+      popUp(true, popUpDeleteEle);
 
       const btnDeleteEle = document.getElementById("js-delete");
 
       // delete functions
       btnDeleteEle?.addEventListener("click", () => {
-        deleteUser(r.id);
+        deleteUser(r.id, popUpDeleteEle);
       });
     });
 
@@ -152,7 +142,7 @@ const displayDataUser = async (data: any) => {
     btnOpenPopUpUpdateUserEle?.addEventListener("click", (e) => {
       console.log("btnOpenPopUpUpdateUserEle", btnOpenPopUpUpdateUserEle);
       e.preventDefault();
-      openPopUpUpdateUser(true);
+      popUp(true, popUpUpdateUserEle);
       firstNameUpdateEle.value = r.firstName;
       lastNameUpdateEle.value = r.lastName;
       genderUpdateEle.value = r.gender;
@@ -167,7 +157,7 @@ const displayDataUser = async (data: any) => {
       btnUpdateUser?.addEventListener("click", (e) => {
         e.preventDefault();
 
-        openPopUpUpdateUser(false);
+        popUp(false, popUpUpdateUserEle);
         if (
           firstNameUpdateEle.value !== r.firstName ||
           lastNameUpdateEle.value !== r.lastName ||
@@ -194,29 +184,9 @@ const displayDataUser = async (data: any) => {
   }
 };
 
-// DELETE USER
-const deleteUser = async (id: number) => {
-  try {
-    const res = await fetch(`https://dummyjson.com/users/${id}`, {
-      method: "DELETE",
-    });
-    const data = await res.json();
-    console.log("data", data);
-
-    if (data.isDeleted) {
-      openPopUpDelete(false);
-      const elementDeleted = document.querySelector(`.table__tr${id}`);
-      elementDeleted?.remove();
-    }
-  } catch (error) {
-    console.log(error);
-    window.alert("not delete");
-  }
-};
-
 for (let i = 0; i < btnClosePopUp.length; i++) {
   btnClosePopUp[i].addEventListener("click", () => {
-    openPopUpDelete(false);
+    popUp(false, popUpDeleteEle);
   });
 }
 
@@ -238,22 +208,13 @@ const phoneAddEle = document.getElementById("js-phone") as HTMLInputElement;
 const genderAddEle = document.getElementById("js-gender") as HTMLInputElement;
 const birthDateAddEle = document.getElementById("js-date") as HTMLInputElement;
 
-const openPopUpAddUser = (open = false) => {
-  if (open) {
-    popUpAddUserEle?.classList.add("flex");
-    popUpAddUserEle?.classList.remove("hidden");
-  } else {
-    popUpAddUserEle?.classList.add("hidden");
-    popUpAddUserEle?.classList.remove("flex");
-  }
-};
 btnPopUpAddUserEle?.addEventListener("click", () => {
-  openPopUpAddUser(true);
+  popUp(true, popUpAddUserEle);
 });
 
 btnCancelPopUpAddUserEle?.addEventListener("click", (e) => {
   e.preventDefault();
-  openPopUpAddUser(false);
+  popUp(false, popUpAddUserEle);
 });
 
 btnAddUser?.addEventListener("click", async (e) => {
@@ -284,7 +245,7 @@ btnAddUser?.addEventListener("click", async (e) => {
       });
       dataToAdd = await res.json();
       console.log("data to add", dataToAdd);
-      openPopUpAddUser();
+      popUp(false, popUpAddUserEle);
     } catch (error) {
       console.log(error);
     }
@@ -316,13 +277,13 @@ btnAddUser?.addEventListener("click", async (e) => {
     );
 
     btnOpenPopUpDeleteEle?.addEventListener("click", () => {
-      openPopUpDelete(true);
+      popUp(true, popUpDeleteEle);
 
       const btnDeleteEle = document.getElementById("js-delete");
 
       // delete functions
       btnDeleteEle?.addEventListener("click", () => {
-        openPopUpDelete(false);
+        popUp(false, popUpDeleteEle);
         const elementDeleted = document.querySelector(
           `.table__tr${dataToAdd.id}`
         );
@@ -338,45 +299,10 @@ const btnCancelPopUpUpdateUserEle = document.getElementById(
   "js-btn-cancel-updateuser"
 );
 
-const openPopUpUpdateUser = (openPopUpUpdate = false) => {
-  if (openPopUpUpdate) {
-    popUpUpdateUserEle?.classList.add("flex");
-    popUpUpdateUserEle?.classList.remove("hidden");
-  } else {
-    popUpUpdateUserEle?.classList.add("hidden");
-    popUpUpdateUserEle?.classList.remove("flex");
-  }
-};
-
 btnCancelPopUpUpdateUserEle?.addEventListener("click", (e) => {
   e.preventDefault();
-  openPopUpUpdateUser(false);
+  popUp(false, popUpUpdateUserEle);
 });
-
-const updateUser = async (dataToUpdate: any, id: number) => {
-  console.log("dataToUpdate", dataToUpdate);
-  console.log("idUpdate", id);
-  try {
-    const res = await fetch(`https://dummyjson.com/users/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dataToUpdate),
-    });
-    const dataUpdateSucess = await res.json();
-    const firstNameEle = document.getElementById(`js-firstlastname-${id}`)!;
-    const emailEle = document.getElementById(`js-email-${id}`)!;
-    const phoneEle = document.getElementById(`js-phone-${id}`)!;
-    const birthDateEle = document.getElementById(`js-birthdate-${id}`)!;
-    firstNameEle.innerHTML = `${dataUpdateSucess.lastName} ${dataUpdateSucess.firstName}`;
-    emailEle.innerHTML = dataUpdateSucess.email;
-    phoneEle.innerHTML = dataUpdateSucess.phone;
-    birthDateEle.innerHTML = dataUpdateSucess.birthDate;
-
-    console.log("dataUpdateSucess", dataUpdateSucess);
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 // SEARCH user
 
@@ -387,10 +313,11 @@ const btnSearchEle = document.getElementById("js-search-btn")!;
 
 const getUserForSearch = async (q: string) => {
   try {
-    const res = await fetch(`https://dummyjson.com/users/search?q=${q}`);
-    const data = await res.json();
+    const data = await getApi(`/users/search?q=${q}`);
     if (data.users.length) {
       displayDataUser(data?.users);
+    } else {
+      window.alert("No find user");
     }
   } catch (error) {
     console.log(error);
@@ -413,10 +340,7 @@ const selectEle = document.getElementById(
 
 const getUserForFilterGender = async (value: string) => {
   try {
-    const res = await fetch(
-      `https://dummyjson.com/users/filter?key=gender&value=${value}`
-    );
-    const data = await res.json();
+    const data = await getApi(`/users/filter?key=gender&value=${value}`);
     displayDataUser(data?.users);
   } catch (error) {
     console.log(error);
