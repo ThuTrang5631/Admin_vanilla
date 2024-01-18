@@ -2,12 +2,12 @@ import { popUp } from "./PopUp";
 import { postApi } from "./api";
 
 export const addUser = async (
-  firstName: any,
-  lastName: any,
-  email: any,
-  phone: any,
-  birthDate: any,
-  gender: any,
+  firstName: string,
+  lastName: string,
+  email: string,
+  phone: string,
+  birthDate: string,
+  gender: string,
   popUpAddUserEle: HTMLElement | null,
   tableTitleEle: HTMLElement,
   popUpDeleteEle: HTMLElement | null
@@ -50,7 +50,11 @@ export const addUser = async (
         </td>
         <td class="table__desc text-center justify-center"><button id="js-openpopupdelete-${
           dataToAdd.id
-        }" class="btn btn-delete"><i class="fa-solid fa-trash"></i></button></td>
+        }" class="btn btn-delete mr-[10px]"><i class="fa-solid fa-trash"></i></button>
+        <button class="btn btn-delete" id="js-openpopupupdate-${dataToAdd.id}">
+        <i class="fas fa-edit"></i>
+      </button>
+        </td>
         `;
     tableTitleEle.appendChild(row);
 

@@ -68,33 +68,33 @@
   <div class="wrappopup wrappopup__createuser hidden" id="js-popupcreateuser">
     <div class="popup popupcreateuser">
       <p class="popupcreateuser__title">Create A New User</p>
-      <form class="popupcreateuser__form">
+      <form class="popupcreateuser__form" id="js-createuser-form">
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">First name</label>
-          <input id="js-first-name" class="popup__input" placeholder="Enter first name...">
+          <input name="firstName" class="popup__input" placeholder="Enter first name...">
         </div>
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">Last name</label>
-          <input id="js-last-name" class="popup__input" placeholder="Enter last name...">
+          <input name="lastName" class="popup__input" placeholder="Enter last name...">
         </div>
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">Gender</label>
-          <select id="js-gender" class="popup__input">
+          <select name="gender" class="popup__input">
             <option>Male</option>
             <option>Female</option>
           </select>
         </div>
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">Email</label>
-          <input id="js-email" type="email" class="popup__input" placeholder="Enter email...">
+          <input name="email" type="email" class="popup__input" placeholder="Enter email...">
         </div>
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">Phone</label>
-          <input id="js-phone" maxlength="10" type="text" class="popup__input" placeholder="Enter phone...">
+          <input name="phone" maxlength="10" type="text" class="popup__input" placeholder="Enter phone...">
         </div>
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">Birth date</label>
-          <input id="js-date" type="date" class="popup__input" placeholder="Enter birth date...">
+          <input name="birthDate" type="date" class="popup__input" placeholder="Enter birth date...">
         </div>
         <div class="popupdelete__wrapbtn flex justify-between">
           <button class="popupdelete__btn" id="js-btn-cancel-adduser">Cancel</button>
@@ -106,33 +106,33 @@
   <div class="wrappopup wrappopup__createuser hidden" id="js-popupupdateuser">
     <div class="popup popupcreateuser">
       <p class="popupcreateuser__title"> Update User</p>
-      <form class="popupcreateuser__form">
+      <form class="popupcreateuser__form" id="js-updateuser-form">
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">First name</label>
-          <input id="js-first-name-update" class="popup__input" placeholder="Enter first name...">
+          <input name="firstName" class="popup__input" placeholder="Enter first name...">
         </div>
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">Last name</label>
-          <input id="js-last-name-update" class="popup__input" placeholder="Enter last name...">
+          <input name="lastName" class="popup__input" placeholder="Enter last name...">
         </div>
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">Gender</label>
-          <select id="js-gender-update" class="popup__input">
+          <select name="gender" class="popup__input">
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
         </div>
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">Email</label>
-          <input id="js-email-update" type="email" class="popup__input" placeholder="Enter email...">
+          <input name="email" type="email" class="popup__input" placeholder="Enter email...">
         </div>
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">Phone</label>
-          <input id="js-phone-update" maxlength="10" type="text" class="popup__input" placeholder="Enter phone...">
+          <input name="phone" maxlength="10" type="text" class="popup__input" placeholder="Enter phone...">
         </div>
         <div class="popupcreateuser__wrapfield flex flex-col mb-[20px]">
           <label class="popup__label mb-[10px]">Birth date</label>
-          <input id="js-date-update" type="date" class="popup__input" placeholder="Enter birth date...">
+          <input name="birthDate" type="date" class="popup__input" placeholder="Enter birth date...">
         </div>
         <div class="popupdelete__wrapbtn flex justify-between">
           <button class="popupdelete__btn" id="js-btn-cancel-updateuser">Cancel</button>

@@ -24,25 +24,6 @@ let userFinal: any;
 const tableTitleEle = document.getElementById("js-list")!;
 const popUpDeleteEle = document.getElementById("js-popupdelete");
 const btnClosePopUp = document.getElementsByClassName("js-btn-cancel");
-const firstNameUpdateEle = document.getElementById(
-  "js-first-name-update"
-) as HTMLInputElement;
-const lastNameUpdateEle = document.getElementById(
-  "js-last-name-update"
-) as HTMLInputElement;
-const emailUpdateEle = document.getElementById(
-  "js-email-update"
-) as HTMLInputElement;
-const phoneUpdateEle = document.getElementById(
-  "js-phone-update"
-) as HTMLInputElement;
-const genderUpdateEle = document.getElementById(
-  "js-gender-update"
-) as HTMLInputElement;
-const birthDateUpdateEle = document.getElementById(
-  "js-date-update"
-) as HTMLInputElement;
-const btnUpdateUser = document.getElementById("js-updateuser");
 
 const getDataUser = async () => {
   try {
@@ -141,39 +122,42 @@ const displayDataUser = async (data: any) => {
       `js-openpopupupdate-${r.id}`
     );
 
+    const formUpdateEle = document.getElementById(
+      "js-updateuser-form"
+    ) as HTMLFormElement;
+
     btnOpenPopUpUpdateUserEle?.addEventListener("click", (e) => {
       console.log("btnOpenPopUpUpdateUserEle", btnOpenPopUpUpdateUserEle);
       e.preventDefault();
       popUp(true, popUpUpdateUserEle);
-      firstNameUpdateEle.value = r.firstName;
-      lastNameUpdateEle.value = r.lastName;
-      genderUpdateEle.value = r.gender;
-      emailUpdateEle.value = r.email;
-      phoneUpdateEle.value = r.phone;
-      birthDateUpdateEle.value = r.birthDate;
+      formUpdateEle.elements.firstName.value = r.firstName;
+      formUpdateEle.elements.lastName.value = r.lastName;
+      formUpdateEle.elements.gender.value = r.gender;
+      formUpdateEle.elements.email.value = r.email;
+      formUpdateEle.elements.phone.value = r.phone;
+      formUpdateEle.elements.birthDate.value = r.birthDate;
       let dataToUpdate;
 
       const idUpdate = r.id;
 
-      btnUpdateUser?.addEventListener("click", (e) => {
+      formUpdateEle.addEventListener("submit", (e) => {
         e.preventDefault();
-
         popUp(false, popUpUpdateUserEle);
         if (
-          firstNameUpdateEle.value !== r.firstName ||
-          lastNameUpdateEle.value !== r.lastName ||
-          genderUpdateEle.value !== r.gender ||
-          emailUpdateEle.value !== r.email ||
-          phoneUpdateEle.value !== r.phone ||
-          birthDateUpdateEle.value !== r.birthDate
+          formUpdateEle.elements.firstName.value !== r.firstName ||
+          formUpdateEle.elements.lastName.value !== r.lastName ||
+          formUpdateEle.elements.gender.value !== r.gender ||
+          formUpdateEle.elements.email.value !== r.email ||
+          formUpdateEle.elements.phone.value !== r.phone ||
+          formUpdateEle.elements.birthDate.value !== r.birthDate
         ) {
           dataToUpdate = {
-            firstName: firstNameUpdateEle.value,
-            lastName: lastNameUpdateEle.value,
-            email: emailUpdateEle.value,
-            phone: phoneUpdateEle.value,
-            gender: genderUpdateEle.value,
-            birthDate: birthDateUpdateEle.value,
+            firstName: formUpdateEle.elements.firstName.value,
+            lastName: formUpdateEle.elements.lastName.value,
+            email: formUpdateEle.elements.email.value,
+            phone: formUpdateEle.elements.phone.value,
+            gender: formUpdateEle.elements.gender.value,
+            birthDate: formUpdateEle.elements.birthDate.value,
           };
 
           // BUG: CALL ID PREVIOUS, SHOULD CALL ID CURRENTLY => CALL MANY TIMES
@@ -197,17 +181,6 @@ const popUpAddUserEle = document.getElementById("js-popupcreateuser");
 const btnCancelPopUpAddUserEle = document.getElementById(
   "js-btn-cancel-adduser"
 );
-const btnAddUser = document.getElementById("js-adduser");
-const firstNameAddEle = document.getElementById(
-  "js-first-name"
-) as HTMLInputElement;
-const lastNameAddEle = document.getElementById(
-  "js-last-name"
-) as HTMLInputElement;
-const emailAddEle = document.getElementById("js-email") as HTMLInputElement;
-const phoneAddEle = document.getElementById("js-phone") as HTMLInputElement;
-const genderAddEle = document.getElementById("js-gender") as HTMLInputElement;
-const birthDateAddEle = document.getElementById("js-date") as HTMLInputElement;
 
 btnPopUpAddUserEle?.addEventListener("click", () => {
   popUp(true, popUpAddUserEle);
@@ -218,14 +191,19 @@ btnCancelPopUpAddUserEle?.addEventListener("click", (e) => {
   popUp(false, popUpAddUserEle);
 });
 
-btnAddUser?.addEventListener("click", async (e) => {
+const formCreateEle = document.getElementById(
+  "js-createuser-form"
+) as HTMLFormElement;
+console.log("formCreateEle", formCreateEle);
+
+formCreateEle?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const firstName = firstNameAddEle.value.trim();
-  const lastName = lastNameAddEle.value.trim();
-  const email = emailAddEle.value.trim();
-  const phone = phoneAddEle.value.trim();
-  const gender = genderAddEle.value.trim();
-  const birthDate = birthDateAddEle.value.trim();
+  const firstName = formCreateEle.elements.firstName.value;
+  const lastName = formCreateEle.elements.lastName.value;
+  const email = formCreateEle.elements.email.value;
+  const phone = formCreateEle.elements.phone.value;
+  const gender = formCreateEle.elements.gender.value;
+  const birthDate = formCreateEle.elements.birthDate.value;
 
   addUser(
     firstName,
