@@ -25,6 +25,13 @@
 
     .table__desc {
       font-size: 16px;
+
+      &:nth-child(2) {
+        a {
+          color: $blue;
+          text-decoration: underline;
+        }
+      }
     }
 
     .fa-check {

@@ -46,9 +46,11 @@ const displayDataUser = async (data: any) => {
     row.classList.add(`table__tr${r.id}`);
     row.innerHTML = `
         <td class="table__desc" id="js-contain-${r.id}">${r.id}</td>
-        <td class="table__desc" id="js-firstlastname-${r.id}">${r.lastName} ${
+        <td class="table__desc" id="js-firstlastname-${
+          r.id
+        }"><a href=user-detail.html?id=${r.id}>${r.lastName} ${
       r.firstName
-    }</td>
+    } </a></td>
         <td class="table__desc" id="js-gender-${r.id}">${r.gender}</td>
         <td class="table__desc" id="js-email-${r.id}">${r.email}</td>
         <td class="table__desc" id="js-phone-${r.id}">${r.phone}</td>
@@ -74,7 +76,6 @@ const displayDataUser = async (data: any) => {
 
     try {
       todosList = await getApi(`/users/${r.id}/todos`);
-      console.log("dataTodo", todosList.todos);
     } catch (error) {
       console.log(error);
     }

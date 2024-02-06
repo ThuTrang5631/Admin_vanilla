@@ -1,0 +1,49 @@
+.user-detail-header {
+  .user-detail-header__btn-back {
+    border: 1px solid #c7c8cc;
+    border-radius: 3px;
+    padding: 5px 10px;
+    background-color: $white;
+
+    i {
+      font-size: 20px;
+    }
+  }
+}
+
+.user-detail-wrapper {
+  .user-detail__infor {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 20px;
+    padding: 30px 70px;
+    display: flex;
+    justify-content: space-between;
+
+    .user-detail__avatar-wrap {
+      width: 30%;
+      margin-right: 80px;
+      img {
+        object-fit: cover;
+        width: 100%;
+      }
+    }
+
+    .user-detail__content {
+      width: 70%;
+    }
+
+    .user-detail__item-info {
+      font-size: 30px;
+      margin-bottom: 20px;
+      width: 100%;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .user-detail__seperate {
+      border-bottom: 1px solid;
+    }
+  }
+}
