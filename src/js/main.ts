@@ -2,7 +2,7 @@ import "../../styles/_index.scss";
 import { updateUser } from "./UpdateUser";
 import { popUp } from "./PopUp";
 import { deleteUser } from "./DeleteUser";
-import { getApi, postApi } from "./api";
+import { getApi } from "./api";
 import { addUser } from "./AddUser";
 import { getUserForFilterGender, getUserForSearch } from "./utils";
 
