@@ -54,3 +54,9 @@ const displayData = (data: any) => {
   companyTitleDetailEle.textContent = data.company.title;
   companyDepartmentDetailEle.textContent = data.company.department;
 };
+
+const buttonBackEle = document.getElementById("js-back-btn");
+console.log("button back", buttonBackEle);
+buttonBackEle?.addEventListener("click", () => {
+  history.back();
+});
